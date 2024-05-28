@@ -1,0 +1,100 @@
+#create a to-do-list 
+
+#create a fxn to print out the program's capabilities
+def display_menu():
+    print('\nTo Do List: ')
+    print('1. Add task')
+    print('2. View all tasks')
+    print('3. Edit task')
+    print('4. Delete task')
+
+#create a fxn to add a task
+def add_task(task):
+    #opens txt file in append mode
+    with open('tasks.txt', 'a') as file:
+        #writes task string with newline 
+        file.write(task + '\n')    
+    print('Task added')
+
+def delete_task(task):
+    #opens txt file in read mode
+    with open('tasks.txt', 'r') as file:
+        #stores all lines of file in task list
+        tasks = file.readlines()
+    #opens txt file in write mode to overwrite
+    with open('tasks.txt', 'w') as file:
+        #iterates through each line in tasks list
+        for line in tasks:
+            #checks if current line (after stripping whitespace) is not equal to the task to be deleted
+            if line.strip() != task:
+                #writes current line to file- if not the task to be deleted
+                file.write(line)
+    print('Task deleted')
+
+def view_task():
+    print('\nCurrent Tasks:')
+   
+    #opens the txt file in read mode
+    with open('tasks.txt', 'r') as file:
+        #reads all lines in file and stores in tasks list
+        tasks = file.readlines()
+        #checks if tasks list is not empty
+        if tasks:
+            #iterates through each task in list tasks with index
+            for index, task in enumerate(tasks, 1):
+                #prints index and task
+                print(f'{index}. {task.strip()}')
+        else:
+            print('No task found.')
+
+def edit_task(old_task,new_task):
+    #opens the txt file in read mode
+    with open('tasks.txt', 'r') as file:
+        #reads all lines in file and stores in tasks list
+        tasks = file.readlines()
+    #opens the txt file in write mode
+    with open('tasks.txt', 'w') as file:
+        #iterates through each task in tasks
+        for task in tasks:
+            #checks if stripped version of task matches old
+            if task.strip() == old_task:
+                #if it does, then write the new task and newline
+                file.write(new_task + '\n')
+            else:
+                #writes current task back to file
+                file.write(task)
+    print('Task added.')
+#main fxn to run the program
+def main():
+    #infinite loop to display menu and handle user choices
+    while True:
+        #displays menu options
+        display_menu()
+        #prompts user to input choice
+        choice = input('Select your choice: ')
+
+        #executes corresponding choice
+        if choice == '1':
+            task = input('Type your task to add: ')
+            #adds users input to the list
+            add_task(task)
+        elif choice == '2':
+            #calls function to display all tasks
+            view_task()
+        elif choice == '3':
+            #prompts user to enter old task
+            old_task = input('Enter old task to edit: ')
+            #prompts user to enter new task
+            new_task = input('Enter new task to replace: ')
+            #function is called and user inputs are arguments
+            edit_task(old_task,new_task)
+        elif choice == '4':
+            task = input('Enter task to delete')
+            delete_task(task)
+        else:
+            print('Invalid. Please try another option.')
+
+#check if the script is being run directly
+if __name__ == "__main__":
+    #call main fxn to start program
+    main()
